@@ -144,7 +144,7 @@ summarize_rows <- function(x, fn, na.rm=TRUE) {
 #' 2 -0.01574033 1.026951 -0.04725656 -2.967057 2.571608      112              70      0
 #' 3 -0.09040182 1.027559 -0.02774705 -3.026888 2.353087      130              54      0
 #' 4  0.09518138 1.030461  0.11294781 -3.409049 2.544992       90              72      0
-summarize_matrix <- function(x, na.rm=TRUE) {
+summarize_matrix <- function(x,na.rm=TRUE) {
   result<-t(apply(x,1,function(x){
     c(mean=mean(x,na.rm=na.rm),
     stdev=sd(x,na.rm=na.rm),
@@ -159,6 +159,20 @@ summarize_matrix <- function(x, na.rm=TRUE) {
   result_df <- as.data.frame(result)
   colnames(result_df) <-c("mean", "stdev", "median", "min", "max", "num_lt_0", "num_btw_1_and_5", "num_na")
   return(result_df)
+}
+# ------------ Helper Functions Used By Assignment, You May Ignore ------------
+sample_normal <- function(n, mean=0, sd=1) {
+  set.seed(1337)
+  samples <- rnorm(n, mean=mean, sd=sd)
+  return(samples)
+}
+
+sample_normal_w_missing <- function(n, mean=0, sd=1, missing_frac=0.1) {
+  set.seed(1337)
+  samples <- rnorm(n, mean=mean, sd=sd)
+  missing <- rbinom(length(samples), 1, missing_frac)==1
+  samples[missing] <- NA
+  return(samples)
 }
 # ------------ Helper Functions Used By Assignment, You May Ignore ------------
 sample_normal <- function(n, mean=0, sd=1) {
